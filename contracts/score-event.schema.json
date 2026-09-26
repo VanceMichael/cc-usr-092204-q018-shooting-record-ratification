@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "成绩事件信封",
+  "description": "电子靶原始流、裁判修正与复核确认在认定链上的统一交换结构；事件只追加、不改写。",
+  "type": "object",
+  "required": ["id", "seq", "type", "matchId", "atUtc"],
+  "properties": {
+    "id": { "type": "string", "description": "事件唯一标识" },
+    "seq": { "type": "number", "description": "全局单调序号" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "match_registered",
+        "athlete_entered",
+        "shot_recorded",
+        "shot_voided",
+        "reshoot_authorized",
+        "penalty_applied",
+        "athlete_withdrawn",
+        "calibration_anomaly_reported",
+        "scorecard_review_submitted",
+        "scorecard_confirmed",
+        "appeal_filed",
+        "appeal_resolved"
+      ]
+    },
+    "matchId": { "type": "string" },
+    "atUtc": { "type": "string", "description": "事件落库时刻（UTC，ISO 8601）" },
+    "official": {
+      "type": "object",
+      "description": "执法官员签名（修正、复核、确认类事件必填）",
+      "properties": {
+        "id": { "type": "string" },
+        "signature": { "type": "string" }
+      }
+    }
+  }
+}
