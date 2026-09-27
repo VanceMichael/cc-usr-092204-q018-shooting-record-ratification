@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shooting-result/event-log-record.schema.json",
+  "title": "追加事件链记录",
+  "description": "每条记录为哈希链一环：hash = SHA256(prevHash || canonical(event))。事件只追加、不修改。",
+  "type": "object",
+  "required": ["seq", "hash", "prevHash", "event"],
+  "properties": {
+    "seq": { "type": "integer", "minimum": 1 },
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "prevHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "event": { "$ref": "#/$defs/event" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "event": {
+      "type": "object",
+      "required": ["type", "atUtc"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "COMPETITION_OPENED",
+            "ATHLETE_REGISTERED",
+            "TEAM_REGISTERED",
+            "LANE_DEVICE_REGISTERED",
+            "ATHLETE_LANE_ASSIGNED",
+            "CALIBRATION_CHECK",
+            "TIME_SYNC_CHECK",
+            "START_CONFIRMED",
+            "EQUIPMENT_CHECK",
+            "SHOT_RECORDED",
+            "SHOT_VOIDED",
+            "RESHOT_AWARDED",
+            "PENALTY_DEDUCTED",
+            "ATHLETE_WITHDRAWN",
+            "SHOTS_SIGNED",
+            "PROTEST_FILED",
+            "PROTEST_RESOLVED",
+            "DISPLAY_SNAPSHOT_FROZEN",
+            "GATE_EVIDENCE_SUBMITTED",
+            "MEDIA_FLASH_PUBLISHED",
+            "VERSION_PUBLISHED",
+            "VERSION_CERTIFIED",
+            "RECORD_RATIFIED"
+          ]
+        },
+        "atUtc": { "type": "string", "format": "date-time", "description": "UTC 时刻，系统内部唯一时间真值" },
+        "actorId": { "type": ["string", "null"] },
+        "actorRole": {
+          "type": ["string", "null"],
+          "enum": ["SPECTATOR", "MEDIA", "ATHLETE", "REFEREE", "JURY", "TECHNICAL_DELEGATE", null]
+        },
+        "source": { "type": "string" },
+        "tenths": { "type": "integer", "minimum": 0, "maximum": 109, "description": "单发十分之一环，10.9 环 = 109" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shooting-result/result-status.schema.json",
+  "title": "成绩状态与认定门禁",
+  "type": "object",
+  "required": ["status"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["PROVISIONAL", "PENDING_CONFIRMATION", "OFFICIAL", "SUPERSEDED"],
+      "description": "临时 / 待确认 / 正式 / 已被取代。媒体快讯不属于其中任何一种。"
+    },
+    "gates": {
+      "type": "object",
+      "description": "六道认定门禁的归类结果",
+      "properties": {
+        "passed": { "type": "array", "items": { "$ref": "#/$defs/gate" } },
+        "waiting": { "type": "array", "items": { "$ref": "#/$defs/gate" } },
+        "failed": { "type": "array", "items": { "$ref": "#/$defs/gate" } }
+      }
+    },
+    "protestDeadlineUtc": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "$defs": {
+    "gate": {
+      "type": "string",
+      "enum": ["IDENTITY", "DEVICE", "SHOT_DATA", "TIME_SYNC", "EQUIPMENT", "PROTEST_WINDOW"]
+    }
+  }
+}

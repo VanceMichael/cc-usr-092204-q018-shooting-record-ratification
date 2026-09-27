@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "start": "node src/server.js",
+    "test": "node --test",
+    "export-fixtures": "node scripts/export-fixtures.mjs"
   }
 }
